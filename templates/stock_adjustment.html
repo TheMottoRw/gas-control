@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Stock Adjustment{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Stock Adjustment</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="product_id" class="form-label">Select Product *</label>
+                        <select class="form-select" id="product_id" name="product_id" required>
+                            <option value="">-- Select Product --</option>
+                            {% for product in products %}
+                            <option value="{{ product.id }}">
+                                {{ product.name }} (Stock: {{ product.quantity }} {{ product.unit or 'units' }})
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="transaction_type" class="form-label">Transaction Type *</label>
+                        <div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="transaction_type" 
+                                       id="type_in" value="IN" checked>
+                                <label class="form-check-label text-success" for="type_in">
+                                    <i class="bi bi-arrow-down-circle"></i> Stock In
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="transaction_type" 
+                                       id="type_out" value="OUT">
+                                <label class="form-check-label text-danger" for="type_out">
+                                    <i class="bi bi-arrow-up-circle"></i> Stock Out
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="quantity" class="form-label">Quantity *</label>
+                        <input type="number" class="form-control" id="quantity" name="quantity" required min="1">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="reference" class="form-label">Reference</label>
+                        <input type="text" class="form-control" id="reference" name="reference" 
+                               placeholder="e.g., Purchase Order #123, Sales Invoice #456">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="remarks" class="form-label">Remarks</label>
+                        <textarea class="form-control" id="remarks" name="remarks" rows="2"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Process Transaction
+                    </button>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
